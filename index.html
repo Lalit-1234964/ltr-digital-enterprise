@@ -109,7 +109,6 @@
             <button onclick="filterProducts()">Search</button>
         </div>
         <div class="nav-btns">
-            <button class="btn btn-store" onclick="openUploadModal()">+ Add Listing</button>
             <button class="btn btn-reg" onclick="openVendorRegModal()">Become Seller</button>
             <button class="btn btn-store" onclick="openAuthModal()">Customer Login</button>
             <button class="btn btn-founder" onclick="openLoginModal()">🛡️ Portal & Staff</button>
@@ -123,7 +122,6 @@
         <div class="cat-item" onclick="selectCategory('Groceries & Essentials', this)">🛒 Groceries</div>
     </div>
 
-    <!-- Storefront -->
     <div class="container" id="storeView">
         <div class="section-header">
             <h2 class="section-title" id="categoryTitle">Tripura Heritage Marketplace</h2>
@@ -132,12 +130,19 @@
         <div class="grid" id="productGrid"></div>
     </div>
 
-    <!-- Master Admin / Staff Desk Modal -->
     <div class="modal" id="adminDeskModal" style="justify-content:flex-start; padding:20px 0;">
         <div class="modal-box wide" style="margin:0 auto;">
             <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #232d42; padding-bottom:10px;">
                 <h3 id="panelTitle" style="color:#ffaa00;">👑 Enterprise Management Control Desk</h3>
                 <button onclick="closeAdminDesk()" style="background:none; border:none; color:#ff4444; font-size:16px; cursor:pointer;">✕</button>
+            </div>
+
+            <div style="margin: 15px 0; background: #0c0f17; padding: 15px; border-radius: 6px; border: 1px solid #232d42; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h4 style="color:#00ffcc; font-size:14px;">🛍️ Product Catalog Control</h4>
+                    <p style="font-size:11px; color:#8fa0b5;">New traditional craft ya grocery item store par list karein.</p>
+                </div>
+                <button class="btn btn-store" onclick="openUploadModal()">+ Add New Listing</button>
             </div>
 
             <div class="metrics-grid" style="margin-top:15px;">
@@ -162,7 +167,6 @@
                 <button class="admin-tab" id="masterKeysTabBtn" onclick="switchAdminTab('security', this)">🔑 Master Keys</button>
             </div>
 
-            <!-- Tab: Sales -->
             <div id="adm-sales" class="adm-pane">
                 <table class="admin-table">
                     <thead><tr><th>Date</th><th>Item & UTR</th><th>Buyer</th><th>Price</th><th>10% Margin</th><th>Payout</th></tr></thead>
@@ -170,7 +174,6 @@
                 </table>
             </div>
 
-            <!-- Tab: Inventory Stock Control -->
             <div id="adm-inventory" class="adm-pane" style="display:none;">
                 <p style="font-size:12px; color:#8fa0b5; margin-bottom:10px;">Products ka stock manually In/Out toggle karein:</p>
                 <table class="admin-table">
@@ -179,7 +182,6 @@
                 </table>
             </div>
 
-            <!-- Tab: Staff & Letters -->
             <div id="adm-recruit" class="adm-pane" style="display:none;">
                 <form onsubmit="recruitStaff(event)" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:15px;">
                     <input type="text" id="staffName" placeholder="Full Name" required style="margin:0;">
@@ -199,7 +201,6 @@
                 </table>
             </div>
 
-            <!-- Tab: Master Keys -->
             <div id="adm-security" class="adm-pane" style="display:none;">
                 <div style="max-width:350px; text-align:left;">
                     <label style="font-size:11px; color:#ffaa00; font-weight:bold;">Founder Password:</label>
@@ -210,7 +211,6 @@
         </div>
     </div>
 
-    <!-- Product Upload Modal -->
     <div class="modal" id="uploadModal">
         <div class="modal-box">
             <h3 style="color: #00ffcc; margin-bottom: 10px;">➕ Add Marketplace Listing</h3>
@@ -230,7 +230,6 @@
         </div>
     </div>
 
-    <!-- Login Modal -->
     <div class="modal" id="loginModal">
         <div class="modal-box">
             <h3 style="color: #ffaa00; margin-bottom: 15px;">🛡️ Portal & Staff Login</h3>
@@ -248,7 +247,6 @@
         </div>
     </div>
 
-    <!-- Vendor Registration Modal with SMS OTP -->
     <div class="modal" id="vendorRegModal">
         <div class="modal-box">
             <h3 style="color: #00ffcc; margin-bottom: 10px;">🏪 Seller Registration (SMS OTP)</h3>
@@ -266,7 +264,6 @@
         </div>
     </div>
 
-    <!-- Customer Auth Modal with SMS OTP -->
     <div class="modal" id="authModal">
         <div class="modal-box">
             <h3 style="color: #3b82f6; margin-bottom: 10px;">👤 Customer Login & Signup (SMS OTP)</h3>
@@ -284,7 +281,6 @@
         </div>
     </div>
 
-    <!-- Product Reviews & Issues Modal -->
     <div class="modal" id="reviewModal">
         <div class="modal-box wide">
             <h3 id="revProductTitle" style="color:#00ffcc; margin-bottom:10px;">Product Reviews & Issues</h3>
@@ -304,7 +300,6 @@
         </div>
     </div>
 
-    <!-- Editable Offer & Joining Letter Modal -->
     <div class="modal" id="letterModal">
         <div class="modal-box wide" style="background:#1e293b;">
             <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
@@ -322,7 +317,6 @@
         </div>
     </div>
 
-    <!-- Payment Checkout Modal -->
     <div class="modal" id="payModal">
         <div class="modal-box">
             <h3 id="payItemTitle" style="color: #00ffcc; margin-bottom: 6px;">Pay via Enterprise UPI</h3>
@@ -440,7 +434,7 @@
             localStorage.setItem('ltr_products', JSON.stringify(products));
             alert(`✅ Product Published! Price (Inc. 10% Margin): ₹${price}`);
             closeUploadModal();
-            filterProducts();
+            renderProducts(products);
         }
 
         // Reviews & Issues
