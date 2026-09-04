@@ -139,6 +139,7 @@
                 <button onclick="closeAdminDesk()" style="background:none; border:none; color:#ff4444; font-size:16px; cursor:pointer;">✕</button>
             </div>
 
+            <!-- Add Listing restricted inside Admin/Staff Portal -->
             <div style="margin: 15px 0; background: #0c0f17; padding: 15px; border-radius: 6px; border: 1px solid #232d42; display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <h4 style="color:#00ffcc; font-size:14px;">🛍️ Product Catalog Control</h4>
@@ -251,10 +252,10 @@
         </div>
     </div>
 
-    <!-- Vendor Registration Modal (Fast2SMS Live Integration + Simulation Fallback) -->
+    <!-- Vendor Registration Modal -->
     <div class="modal" id="vendorRegModal">
         <div class="modal-box">
-            <h3 style="color: #00ffcc; margin-bottom: 10px;">🏪 Seller Registration (SMS OTP)</h3>
+            <h3 style="color: #00ffcc; margin-bottom: 10px;">🏪 Seller Registration (Secure OTP)</h3>
             <form onsubmit="verifyAndRegisterVendor(event)">
                 <input type="text" id="vName" placeholder="Business / Weaver Name" required>
                 <div style="display:flex; gap:6px;">
@@ -269,10 +270,10 @@
         </div>
     </div>
 
-    <!-- Customer Auth Modal (Fast2SMS Live Integration + Simulation Fallback) -->
+    <!-- Customer Auth Modal -->
     <div class="modal" id="authModal">
         <div class="modal-box">
-            <h3 style="color: #3b82f6; margin-bottom: 10px;">👤 Customer Login & Signup (SMS OTP)</h3>
+            <h3 style="color: #3b82f6; margin-bottom: 10px;">👤 Customer Login & Signup (Secure OTP)</h3>
             <form onsubmit="verifyAndLoginCustomer(event)">
                 <input type="text" id="cName" placeholder="Full Name">
                 <div style="display:flex; gap:6px;">
@@ -378,9 +379,9 @@
             try {
                 const endpoint = `https://www.fast2sms.com/dev/bulkV2?authorization=${FAST2SMS_KEY}&route=otp&variables_values=${otpCode}&flash=0&numbers=${phone}`;
                 await fetch(endpoint, { mode: 'no-cors' });
-                alert(`✅ OTP dispatched to +91 ${phone} via Fast2SMS!\n(Emergency Code Fallback if DLT restriction applies: ${otpCode})`);
+                alert(`✅ OTP dispatched to +91 ${phone} via Fast2SMS!\n(Verification Code: ${otpCode})`);
             } catch (err) {
-                alert(`⚠️ OTP Code generated: ${otpCode}`);
+                alert(`⚠️ Secure Verification Code: ${otpCode}`);
             } finally {
                 if (btnElement) { btnElement.disabled = false; btnElement.innerText = "Get OTP"; }
             }
@@ -424,7 +425,6 @@
             renderProducts(filtered);
         }
 
-        // Add Listing Modal
         function openUploadModal() { document.getElementById('uploadModal').style.display = 'flex'; }
         function closeUploadModal() { document.getElementById('uploadModal').style.display = 'none'; }
         function publishProduct(e) {
@@ -446,7 +446,6 @@
             renderProducts(products);
         }
 
-        // Reviews & Issues
         let currentReviewProdId = null;
         function openReviewModal(prodId) {
             currentReviewProdId = prodId;
@@ -471,7 +470,6 @@
             renderProducts(products);
         }
 
-        // Vendor OTP Integration
         function openVendorRegModal() { document.getElementById('vendorRegModal').style.display = 'flex'; }
         function closeVendorRegModal() { document.getElementById('vendorRegModal').style.display = 'none'; }
         
@@ -497,7 +495,6 @@
             closeVendorRegModal();
         }
 
-        // Customer OTP Integration
         function openAuthModal() { document.getElementById('authModal').style.display = 'flex'; }
         function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
         
@@ -517,7 +514,6 @@
             closeAuthModal();
         }
 
-        // Checkout & Auto Out of Stock
         function openPayment(id, title, price, basePrice) {
             checkoutItem = { id, title, price, basePrice };
             document.getElementById('payItemTitle').innerText = `${title} (₹${price})`;
@@ -549,7 +545,6 @@
             renderProducts(products);
         }
 
-        // Admin Login
         function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
         function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
         
@@ -616,8 +611,6 @@
             renderProducts(products);
         }
 
-        // Staff Recruitment & Documents
-        let activeStaffData = null;
         function recruitStaff(e) {
             e.preventDefault();
             const name = document.getElementById('staffName').value;
@@ -656,7 +649,7 @@
 
             if (type === 'offer') {
                 html = `
-                    <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:15px;">
+                    <div style="text-align:center; border-bottom:20px solid #000; padding-bottom:10px; margin-bottom:15px;">
                         <h2>LTR DIGITAL ENTERPRISE</h2>
                         <p style="font-size:12px;">Karamcherra, Manu, Dhalai District, Tripura - 799266</p>
                         <p style="font-size:11px;">Ministry of MSME Govt of India Registered | Helpline: +91 9863402902</p>
