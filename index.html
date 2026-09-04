@@ -123,6 +123,7 @@
         <div class="cat-item" onclick="selectCategory('Groceries & Essentials', this)">🛒 Groceries</div>
     </div>
 
+    <!-- Storefront -->
     <div class="container" id="storeView">
         <div class="section-header">
             <h2 class="section-title" id="categoryTitle">Tripura Heritage Marketplace</h2>
@@ -131,6 +132,7 @@
         <div class="grid" id="productGrid"></div>
     </div>
 
+    <!-- Master Admin / Staff Desk Modal -->
     <div class="modal" id="adminDeskModal" style="justify-content:flex-start; padding:20px 0;">
         <div class="modal-box wide" style="margin:0 auto;">
             <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #232d42; padding-bottom:10px;">
@@ -160,6 +162,7 @@
                 <button class="admin-tab" id="masterKeysTabBtn" onclick="switchAdminTab('security', this)">🔑 Master Keys</button>
             </div>
 
+            <!-- Tab: Sales -->
             <div id="adm-sales" class="adm-pane">
                 <table class="admin-table">
                     <thead><tr><th>Date</th><th>Item & UTR</th><th>Buyer</th><th>Price</th><th>10% Margin</th><th>Payout</th></tr></thead>
@@ -167,6 +170,7 @@
                 </table>
             </div>
 
+            <!-- Tab: Inventory Stock Control -->
             <div id="adm-inventory" class="adm-pane" style="display:none;">
                 <p style="font-size:12px; color:#8fa0b5; margin-bottom:10px;">Products ka stock manually In/Out toggle karein:</p>
                 <table class="admin-table">
@@ -175,6 +179,7 @@
                 </table>
             </div>
 
+            <!-- Tab: Staff & Letters -->
             <div id="adm-recruit" class="adm-pane" style="display:none;">
                 <form onsubmit="recruitStaff(event)" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:15px;">
                     <input type="text" id="staffName" placeholder="Full Name" required style="margin:0;">
@@ -194,6 +199,7 @@
                 </table>
             </div>
 
+            <!-- Tab: Master Keys -->
             <div id="adm-security" class="adm-pane" style="display:none;">
                 <div style="max-width:350px; text-align:left;">
                     <label style="font-size:11px; color:#ffaa00; font-weight:bold;">Founder Password:</label>
@@ -204,6 +210,7 @@
         </div>
     </div>
 
+    <!-- Product Upload Modal -->
     <div class="modal" id="uploadModal">
         <div class="modal-box">
             <h3 style="color: #00ffcc; margin-bottom: 10px;">➕ Add Marketplace Listing</h3>
@@ -223,6 +230,7 @@
         </div>
     </div>
 
+    <!-- Login Modal -->
     <div class="modal" id="loginModal">
         <div class="modal-box">
             <h3 style="color: #ffaa00; margin-bottom: 15px;">🛡️ Portal & Staff Login</h3>
@@ -240,6 +248,7 @@
         </div>
     </div>
 
+    <!-- Vendor Registration Modal with SMS OTP -->
     <div class="modal" id="vendorRegModal">
         <div class="modal-box">
             <h3 style="color: #00ffcc; margin-bottom: 10px;">🏪 Seller Registration (SMS OTP)</h3>
@@ -257,6 +266,7 @@
         </div>
     </div>
 
+    <!-- Customer Auth Modal with SMS OTP -->
     <div class="modal" id="authModal">
         <div class="modal-box">
             <h3 style="color: #3b82f6; margin-bottom: 10px;">👤 Customer Login & Signup (SMS OTP)</h3>
@@ -274,6 +284,7 @@
         </div>
     </div>
 
+    <!-- Product Reviews & Issues Modal -->
     <div class="modal" id="reviewModal">
         <div class="modal-box wide">
             <h3 id="revProductTitle" style="color:#00ffcc; margin-bottom:10px;">Product Reviews & Issues</h3>
@@ -293,6 +304,7 @@
         </div>
     </div>
 
+    <!-- Editable Offer & Joining Letter Modal -->
     <div class="modal" id="letterModal">
         <div class="modal-box wide" style="background:#1e293b;">
             <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
@@ -310,6 +322,7 @@
         </div>
     </div>
 
+    <!-- Payment Checkout Modal -->
     <div class="modal" id="payModal">
         <div class="modal-box">
             <h3 id="payItemTitle" style="color: #00ffcc; margin-bottom: 6px;">Pay via Enterprise UPI</h3>
@@ -332,4 +345,376 @@
             ● <b>Grievance Redressal & Customer Support:</b> Founder Lalit Tripura | Phone: +91 9863402902 | Mail: founder@ltrdigitalenterprise.in<br>
             ● <b>Return & Refund Policy:</b> Verified artisan direct delivery. Returns accepted within 7 days for genuine defect or damage.
         </div>
-        &copy; 202
+        &copy; 2026 LTR Digital Enterprise. Karamcherra, Tripura - 799266. All rights reserved.
+    </footer>
+
+    <script>
+        const MY_UPI_ID = "reublehateno1234-5@okicici";
+        const FAST2SMS_KEY = "jzBuVlkaE6cb5WZrtNfsRiQG0TCXwSKJxen8hYA3PmqoOyDLvI8tWQEULx7VaPey9nguzGHw0dbolpND";
+
+        let generatedOTP = null;
+        let activeCategory = "All";
+        let checkoutItem = null;
+
+        const defaultProducts = [
+            { id: 1, title: "Authentic Handwoven Chamthwi Rignai", category: "Traditional Rignai, Risa & Handloom", basePrice: 1300, price: 1430, vendor: "LTR-WEAVER", inStock: true, img: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=400", reviews: [{stars: 5, text: "Very pure handloom quality!", author: "Sanjay Tripura"}] },
+            { id: 2, title: "Tripura Handcrafted Bamboo Lamp", category: "Bamboo & Cane Crafts", basePrice: 650, price: 715, vendor: "LTR-ARTISAN", inStock: true, img: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=400", reviews: [{stars: 4, text: "Nice bamboo craft finish.", author: "Amit Roy"}] }
+        ];
+
+        function getProducts() { return JSON.parse(localStorage.getItem('ltr_products') || JSON.stringify(defaultProducts)); }
+        function getVendors() { return JSON.parse(localStorage.getItem('ltr_vendors') || "{}"); }
+        function getStaff() { return JSON.parse(localStorage.getItem('ltr_staff') || "[]"); }
+        function getOrders() { return JSON.parse(localStorage.getItem('ltr_orders') || "[]"); }
+        function getPasswords() { return JSON.parse(localStorage.getItem('ltr_passwords') || JSON.stringify({ founder: "lalit123", cofounder: "cofounder123" })); }
+
+        let visits = parseInt(localStorage.getItem('ltr_visits') || "0") + 1;
+        localStorage.setItem('ltr_visits', visits);
+
+        async function triggerRealSMS(phone, otpCode, btnElement) {
+            if (btnElement) { btnElement.disabled = true; btnElement.innerText = "Sending..."; }
+            try {
+                const endpoint = `https://www.fast2sms.com/dev/bulkV2?authorization=${FAST2SMS_KEY}&route=otp&variables_values=${otpCode}&flash=0&numbers=${phone}`;
+                await fetch(endpoint, { mode: 'no-cors' });
+                alert(`✅ OTP dispatched directly to +91 ${phone} via SMS!`);
+            } catch (err) {
+                alert(`OTP request submitted for +91 ${phone}.`);
+            } finally {
+                if (btnElement) { btnElement.disabled = false; btnElement.innerText = "Get OTP"; }
+            }
+        }
+
+        function renderProducts(items) {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = "";
+            items.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                const oosBadge = !p.inStock ? `<div class="badge-oos">OUT OF STOCK</div>` : '';
+                const buyBtn = p.inStock 
+                    ? `<button class="btn-buy" onclick="openPayment(${p.id}, '${p.title}', ${p.price}, ${p.basePrice})">Buy Now</button>`
+                    : `<button class="btn-buy disabled" disabled>Out of Stock</button>`;
+
+                card.innerHTML = `
+                    ${oosBadge}
+                    <img src="${p.img}" alt="${p.title}" style="${!p.inStock ? 'opacity:0.5;' : ''}">
+                    <div class="category-tag">Vendor: ${p.vendor} | Origin: India 🇮🇳</div>
+                    <h3>${p.title}</h3>
+                    <div class="price">₹${p.price}</div>
+                    <button class="btn" style="background:#1e2638; color:#00ffcc; width:100%; margin-top:4px; font-size:11px;" onclick="openReviewModal(${p.id})">⭐ Reviews & Issues (${p.reviews ? p.reviews.length : 0})</button>
+                    ${buyBtn}
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function selectCategory(cat, el) {
+            activeCategory = cat;
+            document.querySelectorAll('.cat-item').forEach(e => e.classList.remove('active'));
+            if(el) el.classList.add('active');
+            document.getElementById('categoryTitle').innerText = cat === 'All' ? 'Tripura Heritage Marketplace' : cat;
+            filterProducts();
+        }
+
+        function filterProducts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = getProducts().filter(p => (activeCategory === 'All' || p.category === activeCategory) && p.title.toLowerCase().includes(query));
+            renderProducts(filtered);
+        }
+
+        // Add Listing Modal
+        function openUploadModal() { document.getElementById('uploadModal').style.display = 'flex'; }
+        function closeUploadModal() { document.getElementById('uploadModal').style.display = 'none'; }
+        function publishProduct(e) {
+            e.preventDefault();
+            const category = document.getElementById('pCat').value;
+            const title = document.getElementById('pTitle').value;
+            const basePrice = parseFloat(document.getElementById('pBasePrice').value);
+            const vendor = document.getElementById('pVendor').value;
+            const img = document.getElementById('pImg').value;
+
+            const margin = Math.round(basePrice * 0.10);
+            const price = basePrice + margin;
+
+            let products = getProducts();
+            products.unshift({ id: Date.now(), title, category, basePrice, price, vendor, inStock: true, img, reviews: [] });
+            localStorage.setItem('ltr_products', JSON.stringify(products));
+            alert(`✅ Product Published! Price (Inc. 10% Margin): ₹${price}`);
+            closeUploadModal();
+            filterProducts();
+        }
+
+        // Reviews & Issues
+        let currentReviewProdId = null;
+        function openReviewModal(prodId) {
+            currentReviewProdId = prodId;
+            document.getElementById('revProdId').value = prodId;
+            const p = getProducts().find(x => x.id === prodId);
+            document.getElementById('revProductTitle').innerText = `Reviews: ${p.title}`;
+            document.getElementById('revContainer').innerHTML = p.reviews && p.reviews.length ? p.reviews.map(r => `<div style="border-bottom:1px solid #232d42; padding:6px 0; font-size:12px;"><b>${'⭐'.repeat(r.stars)}</b> - ${r.author}<br><span style="color:#8fa0b5;">${r.text}</span></div>`).join('') : '<div style="color:#8fa0b5; font-size:12px;">No reviews yet.</div>';
+            document.getElementById('reviewModal').style.display = 'flex';
+        }
+        function closeReviewModal() { document.getElementById('reviewModal').style.display = 'none'; }
+        function submitReview(e) {
+            e.preventDefault();
+            const stars = parseInt(document.getElementById('revStars').value);
+            const text = document.getElementById('revText').value;
+            let products = getProducts();
+            let p = products.find(x => x.id == currentReviewProdId);
+            if(!p.reviews) p.reviews = [];
+            p.reviews.unshift({ stars, text, author: "Verified Customer" });
+            localStorage.setItem('ltr_products', JSON.stringify(products));
+            alert("✅ Feedback posted!");
+            closeReviewModal();
+            renderProducts(products);
+        }
+
+        // Vendor SMS OTP Registration
+        function openVendorRegModal() { document.getElementById('vendorRegModal').style.display = 'flex'; }
+        function closeVendorRegModal() { document.getElementById('vendorRegModal').style.display = 'none'; }
+        
+        function sendVendorOtp() {
+            const phone = document.getElementById('vPhone').value.trim();
+            if(phone.length < 10) return alert("Enter valid 10-digit mobile!");
+            generatedOTP = Math.floor(1000 + Math.random() * 9000);
+            triggerRealSMS(phone, generatedOTP, event.target);
+            document.getElementById('vOtp').disabled = false;
+            document.getElementById('vSubmitBtn').disabled = false;
+        }
+
+        function verifyAndRegisterVendor(e) {
+            e.preventDefault();
+            if(document.getElementById('vOtp').value != generatedOTP) return alert("Incorrect OTP!");
+            const name = document.getElementById('vName').value;
+            const phone = document.getElementById('vPhone').value;
+            const upi = document.getElementById('vUpi').value;
+            const vId = "LTR-V" + Math.floor(1000 + Math.random() * 9000);
+            let v = getVendors(); v[vId] = { name, phone, upi };
+            localStorage.setItem('ltr_vendors', JSON.stringify(v));
+            alert(`🎉 Seller Verified & Created! ID: ${vId}`);
+            closeVendorRegModal();
+        }
+
+        // Customer SMS OTP Login
+        function openAuthModal() { document.getElementById('authModal').style.display = 'flex'; }
+        function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
+        
+        function sendCustomerOtp() {
+            const phone = document.getElementById('cPhone').value.trim();
+            if(phone.length < 10) return alert("Enter valid mobile!");
+            generatedOTP = Math.floor(1000 + Math.random() * 9000);
+            triggerRealSMS(phone, generatedOTP, event.target);
+            document.getElementById('cOtp').disabled = false;
+            document.getElementById('cSubmitBtn').disabled = false;
+        }
+
+        function verifyAndLoginCustomer(e) {
+            e.preventDefault();
+            if(document.getElementById('cOtp').value != generatedOTP) return alert("Incorrect OTP!");
+            alert("✅ Customer Phone Verified & Logged In!");
+            closeAuthModal();
+        }
+
+        // Checkout & Auto Out of Stock
+        function openPayment(id, title, price, basePrice) {
+            checkoutItem = { id, title, price, basePrice };
+            document.getElementById('payItemTitle').innerText = `${title} (₹${price})`;
+            const upiLink = `upi://pay?pa=${MY_UPI_ID}&pn=LTRDigitalEnterprise&am=${price}&cu=INR`;
+            document.getElementById('qrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(upiLink)}`;
+            document.getElementById('payModal').style.display = 'flex';
+        }
+        function closePayment() { document.getElementById('payModal').style.display = 'none'; }
+
+        function confirmOrder(e) {
+            e.preventDefault();
+            const buyer = document.getElementById('buyerName').value;
+            const address = document.getElementById('buyerAddress').value;
+            const txn = document.getElementById('txnId').value;
+            const margin = Math.round(checkoutItem.price - checkoutItem.basePrice);
+            const payout = checkoutItem.basePrice;
+
+            let products = getProducts();
+            let p = products.find(x => x.id === checkoutItem.id);
+            if(p) p.inStock = false;
+            localStorage.setItem('ltr_products', JSON.stringify(products));
+
+            let orders = getOrders();
+            orders.unshift({ date: new Date().toLocaleDateString(), item: checkoutItem.title, price: checkoutItem.price, margin, payout, buyer, address, txn });
+            localStorage.setItem('ltr_orders', JSON.stringify(orders));
+
+            alert(`🎉 Order Confirmed! Item marked Out of Stock automatically.\n10% Margin: ₹${margin} | Payout: ₹${payout}`);
+            closePayment();
+            renderProducts(products);
+        }
+
+        // Admin Login
+        function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
+        function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
+        
+        const loginRoleSelect = document.getElementById('loginRole');
+        if(loginRoleSelect) {
+            loginRoleSelect.onchange = (e) => {
+                document.getElementById('loginIdInput').style.display = (e.target.value === 'staff') ? 'block' : 'none';
+            };
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const role = document.getElementById('loginRole').value;
+            const pass = document.getElementById('loginPass').value.trim();
+            const p = getPasswords();
+
+            if (role === 'founder' && pass === p.founder) {
+                closeLoginModal(); launchAdminDesk('founder');
+            } else if (role === 'cofounder' && pass === p.cofounder) {
+                closeLoginModal(); launchAdminDesk('cofounder');
+            } else if (role === 'staff') {
+                const sId = document.getElementById('loginIdInput').value.trim();
+                const member = getStaff().find(s => s.staffId === sId && s.password === pass);
+                if(member) { closeLoginModal(); launchAdminDesk('staff', member); }
+                else { alert("Invalid Staff ID or Password!"); }
+            } else { alert("Incorrect password!"); }
+        }
+
+        function launchAdminDesk(role, staffObj) {
+            document.getElementById('statVisits').innerText = visits;
+            const orders = getOrders();
+            document.getElementById('statOrders').innerText = orders.length;
+            let totProfit = 0; orders.forEach(o => totProfit += o.margin);
+            document.getElementById('statProfit').innerText = `₹${totProfit}`;
+
+            document.getElementById('adminOrdersBody').innerHTML = orders.length ? orders.map(o => `<tr><td>${o.date}</td><td><b>${o.item}</b><br><small>${o.txn}</small></td><td>${o.buyer}</td><td>₹${o.price}</td><td style="color:#ffaa00; font-weight:bold;">₹${o.margin}</td><td style="color:#00ffcc;">₹${o.payout}</td></tr>`).join('') : '<tr><td colspan="6" style="text-align:center; color:#8fa0b5;">No orders yet.</td></tr>';
+
+            renderInventoryTable();
+            renderStaffTable();
+
+            document.getElementById('masterKeysTabBtn').style.display = (role === 'founder') ? 'inline-block' : 'none';
+            document.getElementById('inputFounderPass').value = getPasswords().founder;
+            document.getElementById('adminDeskModal').style.display = 'flex';
+        }
+        function closeAdminDesk() { document.getElementById('adminDeskModal').style.display = 'none'; }
+
+        function switchAdminTab(tab, el) {
+            document.querySelectorAll('.adm-pane').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('adm-' + tab).style.display = 'block';
+            el.classList.add('active');
+        }
+
+        function renderInventoryTable() {
+            document.getElementById('adminInventoryBody').innerHTML = getProducts().map(p => `<tr><td><b>${p.title}</b></td><td>${p.category}</td><td>₹${p.price}</td><td style="color:${p.inStock ? '#00ffcc':'#ff4444'};">${p.inStock ? 'IN STOCK' : 'OUT OF STOCK'}</td><td><button class="btn" style="background:${p.inStock ? '#ff4444':'#00ffcc'}; color:#000; font-size:10px;" onclick="toggleStock(${p.id})">${p.inStock ? 'Set Out of Stock' : 'Make In Stock'}</button></td></tr>`).join('');
+        }
+
+        function toggleStock(id) {
+            let products = getProducts();
+            let p = products.find(x => x.id === id);
+            if(p) p.inStock = !p.inStock;
+            localStorage.setItem('ltr_products', JSON.stringify(products));
+            renderInventoryTable();
+            renderProducts(products);
+        }
+
+        // Staff Recruitment & Documents
+        let activeStaffData = null;
+        function recruitStaff(e) {
+            e.preventDefault();
+            const name = document.getElementById('staffName').value;
+            const role = document.getElementById('staffRole').value;
+            const phone = document.getElementById('staffPhone').value;
+            const password = document.getElementById('staffPass').value;
+            const salary = document.getElementById('staffSalary').value;
+            const staffId = "LTR-EMP" + Math.floor(100 + Math.random() * 900);
+
+            let s = getStaff();
+            s.push({ staffId, name, role, phone, password, salary });
+            localStorage.setItem('ltr_staff', JSON.stringify(s));
+            alert(`✅ Staff Hired! ID: ${staffId}`);
+            e.target.reset();
+            renderStaffTable();
+            openLetterModal(name, role, staffId, phone, salary);
+        }
+
+        function renderStaffTable() {
+            document.getElementById('adminStaffBody').innerHTML = getStaff().length ? getStaff().map(st => `<tr><td style="color:#00ffcc;">${st.staffId}</td><td><b>${st.name}</b><br><small>${st.role}</small></td><td>${st.phone}</td><td style="color:#ffaa00; font-weight:bold;">₹${st.salary || 0}/m</td><td><button class="btn btn-store" style="font-size:10px; padding:3px 6px;" onclick="openLetterModal('${st.name}', '${st.role}', '${st.staffId}', '${st.phone}', '${st.salary || 0}')">📄 View Documents</button></td></tr>`).join('') : '<tr><td colspan="5" style="text-align:center; color:#8fa0b5;">No staff recruited.</td></tr>';
+        }
+
+        let currentDocType = 'offer';
+        let currentDocParams = {};
+
+        function openLetterModal(name, role, staffId, phone, salary) {
+            currentDocParams = { name, role, staffId, phone, salary };
+            switchLetterDoc('offer');
+            document.getElementById('letterModal').style.display = 'flex';
+        }
+
+        function switchLetterDoc(type) {
+            currentDocType = type;
+            const { name, role, staffId, phone, salary } = currentDocParams;
+            let html = '';
+
+            if (type === 'offer') {
+                html = `
+                    <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:15px;">
+                        <h2>LTR DIGITAL ENTERPRISE</h2>
+                        <p style="font-size:12px;">Karamcherra, Manu, Dhalai District, Tripura - 799266</p>
+                        <p style="font-size:11px;">Ministry of MSME Govt of India Registered | Helpline: +91 9863402902</p>
+                    </div>
+                    <div style="float:right; font-size:13px;"><b>Ref ID:</b> ${staffId}<br><b>Date:</b> ${new Date().toLocaleDateString()}</div>
+                    <p><b>To,</b><br><span contenteditable="true" class="offer-editable">${name}</span><br>Mobile: +91 <span contenteditable="true" class="offer-editable">${phone}</span></p>
+                    <h3 style="text-align:center; margin:15px 0; text-decoration:underline;">OFFICIAL LETTER OF APPOINTMENT</h3>
+                    <p>Dear <span contenteditable="true" class="offer-editable">${name.split(" ")[0]}</span>,</p>
+                    <p style="margin:8px 0;">We are pleased to appoint you to the position of <b><span contenteditable="true" class="offer-editable">${role}</span></b> at <b>LTR Digital Enterprise</b>. Your engagement is governed by enterprise discipline, data security (IT Act 2000), and performance growth milestones.</p>
+                    <p style="margin:8px 0;"><b>Remuneration Structure:</b> Your approved fixed monthly salary is <b>₹<span contenteditable="true" class="offer-editable">${salary}</span>/- (INR)</b>, payable upon fulfillment of monthly operational targets under founder supervision.</p>
+                    <div style="margin-top:35px; display:flex; justify-content:space-between; align-items:flex-end;">
+                        <div>
+                            <div style="font-family:'Brush Script MT', cursive; font-size:24px; color:#1e293b;">Lalit Tripura</div>
+                            <div style="border-top:1px solid #000; width:180px; padding-top:4px; font-size:11px;"><b>Lalit Tripura</b><br>Founder & Managing Director</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="height:30px;"></div>
+                            <div style="border-top:1px solid #000; width:180px; padding-top:4px; font-size:11px; text-align:center;">Candidate Signature</div>
+                        </div>
+                    </div>
+                `;
+            } else if (type === 'joining') {
+                html = `
+                    <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:15px;">
+                        <h2>LTR DIGITAL ENTERPRISE</h2>
+                        <p style="font-size:12px;">Karamcherra, Manu, Dhalai District, Tripura - 799266</p>
+                    </div>
+                    <div style="float:right; font-size:13px;"><b>Ref ID:</b> ${staffId}/JOINING<br><b>Date:</b> ${new Date().toLocaleDateString()}</div>
+                    <h3 style="text-align:center; margin:15px 0; text-decoration:underline;">FORMAL JOINING & SERVICE CONFIRMATION</h3>
+                    <p>This is to certify that <b><span contenteditable="true" class="offer-editable">${name}</span></b> has formally joined duty on <span contenteditable="true" class="offer-editable">${new Date().toLocaleDateString()}</span> as <b><span contenteditable="true" class="offer-editable">${role}</span></b>. All terms of appointment, workplace guidelines, and data confidentiality agreements under IT Act 2000 are formally accepted.</p>
+                    <div style="margin-top:50px; display:flex; justify-content:space-between;">
+                        <div><b>Authorized Signatory</b><br>LTR Digital Enterprise</div>
+                        <div style="text-align:right;"><b>Employee Signature</b><br>${name}</div>
+                    </div>
+                `;
+            } else if (type === 'termination') {
+                html = `
+                    <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:15px;">
+                        <h2>LTR DIGITAL ENTERPRISE</h2>
+                        <p style="font-size:12px;">Karamcherra, Manu, Dhalai District, Tripura - 799266</p>
+                    </div>
+                    <h3 style="text-align:center; margin:15px 0; color:#dc2626; text-decoration:underline;">STRICT TERMINATION & DISCIPLINARY POLICY</h3>
+                    <p style="margin:8px 0;"><b>1. Immediate Dismissal:</b> LTR Digital Enterprise reserves the full unconditional legal right to terminate engagement immediately without notice in the event of fraud, data leakage, customer misbehavior, financial embezzlement, or breach of founder instructions.</p>
+                    <p style="margin:8px 0;"><b>2. Data Protection & NDA:</b> Customer delivery addresses and phone numbers are protected under the IT Act 2000. Any unauthorized sharing results in immediate legal action and termination.</p>
+                    <p style="margin:8px 0;"><b>3. Resignation Notice:</b> A minimum of 15 days written notice is required prior to voluntary departure.</p>
+                    <div style="margin-top:40px;"><b>Lalit Tripura</b><br>Founder & Managing Director</div>
+                `;
+            }
+            document.getElementById('letterContent').innerHTML = html;
+        }
+
+        function closeLetterModal() { document.getElementById('letterModal').style.display = 'none'; }
+
+        function updateFounderKey() {
+            let p = getPasswords();
+            p.founder = document.getElementById('inputFounderPass').value.trim();
+            localStorage.setItem('ltr_passwords', JSON.stringify(p));
+            alert("✅ Founder Master Key updated!");
+        }
+
+        window.onload = () => { renderProducts(getProducts()); };
+    </script>
+</body>
+</html>
