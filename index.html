@@ -122,6 +122,7 @@
         <div class="cat-item" onclick="selectCategory('Groceries & Essentials', this)">🛒 Groceries</div>
     </div>
 
+    <!-- Storefront -->
     <div class="container" id="storeView">
         <div class="section-header">
             <h2 class="section-title" id="categoryTitle">Tripura Heritage Marketplace</h2>
@@ -130,6 +131,7 @@
         <div class="grid" id="productGrid"></div>
     </div>
 
+    <!-- Master Admin / Staff Desk Modal -->
     <div class="modal" id="adminDeskModal" style="justify-content:flex-start; padding:20px 0;">
         <div class="modal-box wide" style="margin:0 auto;">
             <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #232d42; padding-bottom:10px;">
@@ -211,6 +213,7 @@
         </div>
     </div>
 
+    <!-- Product Upload Modal -->
     <div class="modal" id="uploadModal">
         <div class="modal-box">
             <h3 style="color: #00ffcc; margin-bottom: 10px;">➕ Add Marketplace Listing</h3>
@@ -230,6 +233,7 @@
         </div>
     </div>
 
+    <!-- Login Modal -->
     <div class="modal" id="loginModal">
         <div class="modal-box">
             <h3 style="color: #ffaa00; margin-bottom: 15px;">🛡️ Portal & Staff Login</h3>
@@ -247,6 +251,7 @@
         </div>
     </div>
 
+    <!-- Vendor Registration Modal (Fast2SMS Live Integration + Simulation Fallback) -->
     <div class="modal" id="vendorRegModal">
         <div class="modal-box">
             <h3 style="color: #00ffcc; margin-bottom: 10px;">🏪 Seller Registration (SMS OTP)</h3>
@@ -264,6 +269,7 @@
         </div>
     </div>
 
+    <!-- Customer Auth Modal (Fast2SMS Live Integration + Simulation Fallback) -->
     <div class="modal" id="authModal">
         <div class="modal-box">
             <h3 style="color: #3b82f6; margin-bottom: 10px;">👤 Customer Login & Signup (SMS OTP)</h3>
@@ -281,6 +287,7 @@
         </div>
     </div>
 
+    <!-- Product Reviews & Issues Modal -->
     <div class="modal" id="reviewModal">
         <div class="modal-box wide">
             <h3 id="revProductTitle" style="color:#00ffcc; margin-bottom:10px;">Product Reviews & Issues</h3>
@@ -300,6 +307,7 @@
         </div>
     </div>
 
+    <!-- Editable Offer & Joining Letter Modal -->
     <div class="modal" id="letterModal">
         <div class="modal-box wide" style="background:#1e293b;">
             <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
@@ -317,6 +325,7 @@
         </div>
     </div>
 
+    <!-- Payment Checkout Modal -->
     <div class="modal" id="payModal">
         <div class="modal-box">
             <h3 id="payItemTitle" style="color: #00ffcc; margin-bottom: 6px;">Pay via Enterprise UPI</h3>
@@ -369,9 +378,9 @@
             try {
                 const endpoint = `https://www.fast2sms.com/dev/bulkV2?authorization=${FAST2SMS_KEY}&route=otp&variables_values=${otpCode}&flash=0&numbers=${phone}`;
                 await fetch(endpoint, { mode: 'no-cors' });
-                alert(`✅ OTP dispatched directly to +91 ${phone} via SMS!`);
+                alert(`✅ OTP dispatched to +91 ${phone} via Fast2SMS!\n(Emergency Code Fallback if DLT restriction applies: ${otpCode})`);
             } catch (err) {
-                alert(`OTP request submitted for +91 ${phone}.`);
+                alert(`⚠️ OTP Code generated: ${otpCode}`);
             } finally {
                 if (btnElement) { btnElement.disabled = false; btnElement.innerText = "Get OTP"; }
             }
@@ -462,13 +471,13 @@
             renderProducts(products);
         }
 
-        // Vendor SMS OTP Registration
+        // Vendor OTP Integration
         function openVendorRegModal() { document.getElementById('vendorRegModal').style.display = 'flex'; }
         function closeVendorRegModal() { document.getElementById('vendorRegModal').style.display = 'none'; }
         
         function sendVendorOtp() {
             const phone = document.getElementById('vPhone').value.trim();
-            if(phone.length < 10) return alert("Enter valid 10-digit mobile!");
+            if(phone.length < 10) return alert("Enter valid 10-digit mobile number!");
             generatedOTP = Math.floor(1000 + Math.random() * 9000);
             triggerRealSMS(phone, generatedOTP, event.target);
             document.getElementById('vOtp').disabled = false;
@@ -477,24 +486,24 @@
 
         function verifyAndRegisterVendor(e) {
             e.preventDefault();
-            if(document.getElementById('vOtp').value != generatedOTP) return alert("Incorrect OTP!");
+            if(document.getElementById('vOtp').value != generatedOTP) return alert("Incorrect OTP code!");
             const name = document.getElementById('vName').value;
             const phone = document.getElementById('vPhone').value;
             const upi = document.getElementById('vUpi').value;
             const vId = "LTR-V" + Math.floor(1000 + Math.random() * 9000);
             let v = getVendors(); v[vId] = { name, phone, upi };
             localStorage.setItem('ltr_vendors', JSON.stringify(v));
-            alert(`🎉 Seller Verified & Created! ID: ${vId}`);
+            alert(`🎉 Seller Verified & Created Successfully! ID: ${vId}`);
             closeVendorRegModal();
         }
 
-        // Customer SMS OTP Login
+        // Customer OTP Integration
         function openAuthModal() { document.getElementById('authModal').style.display = 'flex'; }
         function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
         
         function sendCustomerOtp() {
             const phone = document.getElementById('cPhone').value.trim();
-            if(phone.length < 10) return alert("Enter valid mobile!");
+            if(phone.length < 10) return alert("Enter valid mobile number!");
             generatedOTP = Math.floor(1000 + Math.random() * 9000);
             triggerRealSMS(phone, generatedOTP, event.target);
             document.getElementById('cOtp').disabled = false;
@@ -503,8 +512,8 @@
 
         function verifyAndLoginCustomer(e) {
             e.preventDefault();
-            if(document.getElementById('cOtp').value != generatedOTP) return alert("Incorrect OTP!");
-            alert("✅ Customer Phone Verified & Logged In!");
+            if(document.getElementById('cOtp').value != generatedOTP) return alert("Incorrect OTP code!");
+            alert("✅ Customer Phone Verified & Logged In Successfully!");
             closeAuthModal();
         }
 
